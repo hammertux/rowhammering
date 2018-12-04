@@ -11,7 +11,20 @@ A chip is subdivided in multiple banks and each bank is subdivided in various ro
 When the CPU wants to access a row in memory (e.g., row 1), we have to **activate the row** and the activated row is **copied to the row buffer**, then the value _from the row buffer_ is returned to the CPU. If the CPU wants to access a different row, the process starts again, _evicting_ the previous row from the row buffer. I.e., the row buffer acts like a cache for rows. If the CPU wants to access a row that is in the row buffer, we have a **row hit**, if the row is NOT in the row buffer, there is a **row conflict**.
 
 ## Refreshing the DRAM
+Constraint from the physical world:
+- The cells leak charge over time.
+- Content of the cells has to be **refreshed** repetitively to keep data integrity.
 
+To refresh the DRAM, the process is: The data from the DRAM cells is read **into the row buffer**, and then the same data is **written back to the cells**. DDR3 and DDR4 have some standards that specify the maximum interval between refreshes to guarantee data integrity.
+
+### Problem:
+
+**Cells leak faster upon proximate accesses.** This means that if we access two neighboring cells, the surrounding cells leak charge faster, meaning that the next refresh might not be fast enough to refresh the cells and keep data integrity.
+
+# Rowhammer
+
+> It's like breaking into an apartment by repeatedly slamming the neighbor's door until the vibrations open the door you were after.
+> - Motherboard Vice
 
 ## Welcome to GitHub Pages
 
