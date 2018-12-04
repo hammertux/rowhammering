@@ -2,7 +2,7 @@
 
 Usually, DRAM is connected to the CPU through a **channel**. Modern Organisations have more channels (e.g., dual-channel). A DRAM has two "sides" known as **ranks**. The front of the DRAM is _rank 0_ and the back is _rank 1_. A DRAM contains various chips in an organisation like the following:
 
-- ![](./DRAM\ chip.png)
+- ![](https://github.com/andreadidio98/rowhammering/blob/master/DRAM%20chip.png?raw=true)
 
 
 ## Welcome to GitHub Pages
