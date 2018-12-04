@@ -7,7 +7,7 @@ Usually, DRAM is connected to the CPU through a **channel**. Modern Organisation
 
 A chip is subdivided in multiple banks and each bank is subdivided in various rows. Usually each row is 8KB and stores data in bits in physical memory.
 
-## Reading from DRAM
+## <a name="reading"></a>Reading from DRAM
 When the CPU wants to access a row in memory (e.g., row 1), we have to **activate the row** and the activated row is **copied to the row buffer**, then the value _from the row buffer_ is returned to the CPU. If the CPU wants to access a different row, the process starts again, _evicting_ the previous row from the row buffer. I.e., the row buffer acts like a cache for rows. If the CPU wants to access a row that is in the row buffer, we have a **row hit**, if the row is NOT in the row buffer, there is a **row conflict**.
 
 ## Refreshing the DRAM
@@ -23,8 +23,9 @@ To refresh the DRAM, the process is: The data from the DRAM cells is read **into
 
 # Rowhammer
 
-> It's like breaking into an apartment by repeatedly slamming the neighbor's door until the vibrations open the door you were after.
-> - Motherboard Vice
+> It's like breaking into an apartment by repeatedly slamming the neighbor's door until the vibrations open the door you were after. - Motherboard Vice
+
+Let's say for example, we want to flip bits in _row 2_, what we can do is activating intermittently _rows 1 & 3_. The whole process explained [above](#reading) is repeated for every activation of the two rows. By doing this long enough, we could have bit flips in row 2.
 
 ## Welcome to GitHub Pages
 
