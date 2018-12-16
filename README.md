@@ -44,7 +44,7 @@ There are four _access techniques_ to achieve the goal of having the next access
 3. **Non-temporal accesses** (Qiao et al. 2016)
 4. **Uncached memory** (Veen et al. 2016)
 
-In the _first_ access technique we start by accessing the data, which is loaded in the cache and then we flush it from cache (clflush), and then we loop indefinitely in a **reload-clflush** sequence until we get bit flips.
+In the _first_ access technique we start by accessing the data, which is loaded in the cache and then we flush it from cache (clflush), and then we loop indefinitely in a **reload-flush** sequence until we get bit flips.
 
 ```assembly
 hammer:
@@ -55,3 +55,27 @@ hammer:
   jmp hammer //Loop indefinitely
 
 ```
+
+For the "hammer" routine to work (i.e., cause bit flips), addresses X and Y _MUST_ map to **different rows** of DRAM in the **same bank**.
+
+In the _second_ access technique,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Sources
+
+1. [Google Project Zero Rowhammer](https://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html)
