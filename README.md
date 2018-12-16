@@ -26,3 +26,32 @@ To refresh the DRAM, the process is: The data from the DRAM cells is read **into
 > It's like breaking into an apartment by repeatedly slamming the neighbor's door until the vibrations open the door you were after. - Motherboard Vice
 
 Let's say for example, we want to flip bits in _row 2_, what we can do is activating intermittently _rows 1 & 3_. The whole process explained [above](#reading) is repeated for every activation of the two rows. By doing this long enough, we could have bit flips in row 2. (given that the memory module on the machine is vulnerable!)
+
+## How can we flip bits?
+
+In order to exploit the rowhammer vulnerability, the memory accesses _MUST_ be:
+- **uncached** (i.e., every access must physically reach the DRAM)
+- **fast** (we want to have as many accesses between row refreshes, i.e., we are _racing_ against the next row refresh)
+- **targeted** (we need to reach two specific rows to have the bit flips in the middle row)
+
+The CPU cache lies _between_ the CPU core and the DRAM, therefore only **non-cached accesses** actually reach the DRAM. There are two choices we can make:
+1. _Flush_ the cache after having put the data in the cache.
+2. Don't put the data in the cache in the first place.
+
+There are four _access techniques_ to achieve the goal of having the next access being served directly from DRAM:
+1. **CLFLUSH** instruction (x86) (Kim et al. 2014)
+2. **Cache eviction** (Aweke et al. 2016)
+3. **Non-temporal accesses** (Qiao et al. 2016)
+4. **Uncached memory** (Veen et al. 2016)
+
+In the _first_ access technique we start by accessing the data, which is loaded in the cache and then we flush it from cache (clflush), and then we loop indefinitely in a **reload-clflush** sequence until we get bit flips.
+
+```assembly
+hammer:
+  mov (X), %eax //Read from address X
+  mov (Y), %ebx //Read from address Y
+  clflush (X) //Flush cache for address X
+  clflush (Y) //Flush cache for address Y
+  jmp hammer //Loop indefinitely
+
+```
