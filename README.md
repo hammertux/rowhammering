@@ -98,7 +98,11 @@ Another approach is to reverse engineer the mapping by using timing analysis. We
 ### Random address selection
 
 Features like /proc/<PID>/pagemap and "huge pages" are not available on any system (Linux-Specific). Another approach is to choose address pairs at random. We can allocate a very large block of memory (e.g., 1GB) and then pick random virtual addresses within that block.
-On a machine with 16 DRAM banks, we have a 1/16 chance that the chosen addresses are in the same bank. We could increase the chances of successful row hammering by modifying the ["hammer routine"](#flip-bits) to hammer more addresses per loop-iteration.
+On a machine with 16 DRAM banks, we have a 1/16 chance that the chosen addresses are in the same bank. We could increase the chances of successful row hammering by modifying the [hammer routine](#flip-bits) to hammer more addresses per loop-iteration.
+
+### Double-sided hammering
+
+
 
 
 
