@@ -82,3 +82,4 @@ In the _third_ access technique we use non-temporal accesses, i.e., when we acce
 # Sources
 
 1. [Google Project Zero Rowhammer](https://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html)
+2. [RuhrSec 2017: "Rowhammer Attacks: A Walkthrough Guide", Dr. Clémentine Maurice & Daniel Gruss](https://www.youtube.com/watch?v=-33gCDrSl_Q)
