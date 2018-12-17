@@ -7,9 +7,9 @@
 2. [Rowhammer](#rowhammer)
   - [How can we flip bits?](#flip-bits)
   - [How can we target acceses?](#target)
-      - [Using the physical address mapping](#proc)
-      - [Random address selection](#rand)
-      - [Double-sided hammering](#double-sided)
+          - [Using the physical address mapping](#proc)
+          - [Random address selection](#rand)
+          - [Double-sided hammering](#double-sided)
 3. [How do we exploit bit flips?](#exploitation)
 
 # <a name="dram"></a>How is DRAM Organised?
