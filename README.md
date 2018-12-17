@@ -2,6 +2,15 @@
 
 1. [How is DRAM Organised?](#dram)
   - [Intro](#intro)
+  - [Reading from DRAM](#reading)
+  - [Refreshing the DRAM](#refreshing)
+2. [Rowhammer](#rowhammer)
+  - [How can we flip bits?](#flip-bits)
+  - [How can we target acceses?](#target)
+    - [Using the physical address mapping](#proc)
+    - [Random address selection](#rand)
+    - [Double-sided hammering](#double-sided)
+3. [How do we exploit bit flips?](#exploitation)
 
 # <a name="dram"></a>How is DRAM Organised?
 
@@ -85,9 +94,9 @@ The _fourth_ access technique is good especially on mobile devices:
 Since v4.0, Android has been using ION memory management. Apps can use the interface _/dev/ion_ for **uncached**, physically contiguous memory, and **no privilege and permissions** are needed (Veen et al.).
 
 
-## <a name"target"></a>How can we target accesses?
+## <a name="target"></a>How can we target accesses?
 
-### <a=name"proc"></a>Using the physical address mapping
+### <a=name="proc"></a>Using the physical address mapping
 
 This method uses the knowledge of how the CPU's memory controller maps physical addresses to DRAM's row, column and bank numbers along with the knowledge of either:
 
