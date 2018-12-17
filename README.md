@@ -58,7 +58,10 @@ hammer:
 
 For the "hammer" routine to work (i.e., cause bit flips), addresses X and Y _MUST_ map to **different rows** of DRAM in the **same bank**.
 
-In the _second_ access technique,
+In the _second_ access technique, Aweke et al. showed that an attacker can force the cache to invalidate its content by accessing memory addresses belonging to the **same cache eviction set**. On modern processors, last-level caches have **very high associativity** (8- or 16-way). Therefore, many memory accesses are required to evict a cache block, and this slows down the rowhammering process (NOT ideal). In this approach also the replacement policy of the cache matters (e.g., on modern caches replacement policy is usually NOT LRU).
+
+
+In the _third_ access technique we use non-temporal accesses, i.e., when we access data once and NOT in the immediate future, and therefore the data is not put into the cache (low temporal-locality data) because it would be evicted anyways. Hence, we can use **"Non-Temporal Access (NTA) instructions"** in order to **bypass the cache**, which are there to minimise _cache pollution_.
 
 
 
