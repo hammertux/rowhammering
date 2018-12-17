@@ -53,7 +53,6 @@ hammer:
   clflush (X) //Flush cache for address X
   clflush (Y) //Flush cache for address Y
   jmp hammer //Loop indefinitely
-
 ```
 
 For the "hammer" routine to work (i.e., cause bit flips), addresses X and Y _MUST_ map to **different rows** of DRAM in the **same bank**.
@@ -61,9 +60,24 @@ For the "hammer" routine to work (i.e., cause bit flips), addresses X and Y _MUS
 In the _second_ access technique, Aweke et al. showed that an attacker can force the cache to invalidate its content by accessing memory addresses belonging to the **same cache eviction set**. On modern processors, last-level caches have **very high associativity** (8- or 16-way). Therefore, many memory accesses are required to evict a cache block, and this slows down the rowhammering process (NOT ideal). In this approach also the replacement policy of the cache matters (e.g., on modern caches replacement policy is usually NOT LRU).
 
 
-In the _third_ access technique we use non-temporal accesses, i.e., when we access data once and NOT in the immediate future, and therefore the data is not put into the cache (low temporal-locality data) because it would be evicted anyways. Hence, we can use **"Non-Temporal Access (NTA) instructions"** in order to **bypass the cache**, which are there to minimise _cache pollution_.
+In the _third_ access technique we use non-temporal accesses, i.e., when we access data once and NOT in the immediate future, and therefore the data is not put into the cache (low temporal-locality data) because it would be evicted anyways. Hence, we can use **"Non-Temporal Access (NTA) instructions"** in order to **bypass the cache**, which are there to minimise _cache pollution_. All the non-temporal stores to a single address are combined in one **Write-Combining (WC) buffer**, and _ONLY_ the LAST write goes straight to DRAM (no matter how many stores) meaning that the rate would not be sufficient to "hammer". The trick (Qiao et al.) is to follow the non-temporal store by a cache access to the same address.
+
+```assembly
+hammer:
+  movnti %eax, (X)
+  movnti %eax, (Y)
+  mov %eax, (X)
+  mov %eax (Y)
+  jmp hammer
+```
 
 
+The _fourth_ access technique is good especially on mobile devices:
+- On ARMv7 the flush instruction is **privileged**
+- Cache eviction seems to be too slow
+- On ARMv8 non-temporal stores are still cached in practice.
+
+Since v4.0, Android has been using ION memory management. Apps can use the interface _/dev/ion_ for **uncached**, physically contiguous memory, and **no privilege and permissions** are needed (Veen et al.).
 
 
 
