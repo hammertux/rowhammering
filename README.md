@@ -1,6 +1,6 @@
 # <a name="top"></a>Contents
 
-- [How is DRAM Organised?](#dram)
+1. [How is DRAM Organised?](#dram)
   - [Intro](#intro)
 
 # <a name="dram"></a>How is DRAM Organised?
