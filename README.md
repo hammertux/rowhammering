@@ -86,7 +86,7 @@ Since v4.0, Android has been using ION memory management. Apps can use the inter
 
 This method uses the knowledge of how the CPU's memory controller maps physical addresses to DRAM's row, column and bank numbers along with the knowledge of either:
 
-- The _absolute_ physical addresses of memory we have access to (**/proc/<PID>/pagemap**)
+- The _absolute_ physical addresses of memory we have access to (**/proc/\<PID\>/pagemap**)
 - The _relative_ physical addresses of memory we have access to. Linux allows this through its support for **"huge pages"**, which cover 2MB of contiguous physical address space per page. Whereas a normal 4KB page is smaller than a typical DRAM row, a 2MB page will typically cover multiple rows, some of which will be in the same bank.
 
 Kim et al. take _Y = X + 8MB_
