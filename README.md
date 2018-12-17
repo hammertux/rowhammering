@@ -133,10 +133,16 @@ Doing double-sided hammering requires us to pick physically-contiguous pages, e.
 
 
 
-[Back to Top](#top)
+
 
 # Sources
 
 1. [Google Project Zero Rowhammer](https://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html)
 2. [RuhrSec 2017: "Rowhammer Attacks: A Walkthrough Guide", Dr. Clémentine Maurice & Daniel Gruss](https://www.youtube.com/watch?v=-33gCDrSl_Q)
 3. [Drammer: Deterministic Rowhammer Attacks on Mobile Platforms](https://vvdveen.com/publications/drammer.pdf)
+
+
+
+
+
+[Back to Top](#top)
