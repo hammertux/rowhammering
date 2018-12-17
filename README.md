@@ -27,7 +27,7 @@ To refresh the DRAM, the process is: The data from the DRAM cells is read **into
 
 Let's say for example, we want to flip bits in _row 2_, what we can do is activating intermittently _rows 1 & 3_. The whole process explained [above](#reading) is repeated for every activation of the two rows. By doing this long enough, we could have bit flips in row 2. (given that the memory module on the machine is vulnerable!)
 
-## How can we flip bits?
+## <a name="flip-bits"></a>How can we flip bits?
 
 In order to exploit the rowhammer vulnerability, the memory accesses _MUST_ be:
 - **uncached** (i.e., every access must physically reach the DRAM)
@@ -82,7 +82,23 @@ Since v4.0, Android has been using ION memory management. Apps can use the inter
 
 ## How can we target accesses?
 
+### Using the physical address mapping
 
+This method uses the knowledge of how the CPU's memory controller maps physical addresses to DRAM's row, column and bank numbers along with the knowledge of either:
+
+- The _absolute_ physical addresses of memory we have access to (**/proc/<PID>/pagemap**)
+- The _relative_ physical addresses of memory we have access to. Linux allows this through its support for **"huge pages"**, which cover 2MB of contiguous physical address space per page. Whereas a normal 4KB page is smaller than a typical DRAM row, a 2MB page will typically cover multiple rows, some of which will be in the same bank.
+
+Kim et al. take _Y = X + 8MB_
+
+Another approach is to reverse engineer the mapping by using timing analysis. We can exploit the timing difference between a row hit and a row conflict, if we see a row conflict for an address pair we know they MUST map to the same bank but to a different row (why? -- row buffer keeps only one row).
+
+- [To reverse your own DRAM](https://github.com/IAIK/DRAMA)
+
+### Random address selection
+
+Features like /proc/<PID>/pagemap and "huge pages" are not available on any system (Linux-Specific). Another approach is to choose address pairs at random. We can allocate a very large block of memory (e.g., 1GB) and then pick random virtual addresses within that block.
+On a machine with 16 DRAM banks, we have a 1/16 chance that the chosen addresses are in the same bank. We could increase the chances of successful row hammering by modifying the ["hammer routine"](#flip-bits) to hammer more addresses per loop-iteration.
 
 
 
