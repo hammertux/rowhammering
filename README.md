@@ -1,6 +1,11 @@
-# How is DRAM Organised?
+# <a name="top"></a>Contents
 
-## Intro
+- [How is DRAM Organised?](#dram)
+  - [Intro](#intro)
+
+# <a name="dram"></a>How is DRAM Organised?
+
+## <a name="intro"></a>Intro
 Usually, DRAM is connected to the CPU through a **channel**. Modern Organisations have more channels (e.g., dual-channel). A DRAM has two "sides" known as **ranks**. The front of the DRAM is _rank-0_ and the back is _rank-1_. A DRAM contains various chips in an organisation like the following:
 
 ![DRAM Chip](https://github.com/andreadidio98/rowhammering/blob/master/DRAM%20chip.png?raw=true)
@@ -10,7 +15,7 @@ A chip is subdivided in multiple banks and each bank is subdivided in various ro
 ## <a name="reading"></a>Reading from DRAM
 When the CPU wants to access a row in memory (e.g., row 1), we have to **activate the row** and the activated row is **copied to the row buffer**, then the value _from the row buffer_ is returned to the CPU. If the CPU wants to access a different row, the process starts again, _evicting_ the previous row from the row buffer. I.e., the row buffer acts like a cache for rows. If the CPU wants to access a row that is in the row buffer, we have a **row hit**, if the row is NOT in the row buffer, there is a **row conflict**.
 
-## Refreshing the DRAM
+## <a name="refreshing"></a>Refreshing the DRAM
 Constraint from the physical world:
 - The cells leak charge over time.
 - Content of the cells has to be **refreshed** repetitively to keep data integrity.
@@ -21,7 +26,7 @@ To refresh the DRAM, the process is: The data from the DRAM cells is read **into
 
 **Cells leak faster upon proximate accesses.** This means that if we access two neighboring cells, the surrounding cells leak charge faster, meaning that the next refresh might not be fast enough to refresh the cells and keep data integrity.
 
-# Rowhammer
+# <a name="rowhammer"></a>Rowhammer
 
 > It's like breaking into an apartment by repeatedly slamming the neighbor's door until the vibrations open the door you were after. - Motherboard Vice
 
@@ -80,9 +85,9 @@ The _fourth_ access technique is good especially on mobile devices:
 Since v4.0, Android has been using ION memory management. Apps can use the interface _/dev/ion_ for **uncached**, physically contiguous memory, and **no privilege and permissions** are needed (Veen et al.).
 
 
-## How can we target accesses?
+## <a name"target"></a>How can we target accesses?
 
-### Using the physical address mapping
+### <a=name"proc"></a>Using the physical address mapping
 
 This method uses the knowledge of how the CPU's memory controller maps physical addresses to DRAM's row, column and bank numbers along with the knowledge of either:
 
@@ -95,12 +100,20 @@ Another approach is to reverse engineer the mapping by using timing analysis. We
 
 - [To reverse your own DRAM](https://github.com/IAIK/DRAMA)
 
-### Random address selection
+### <a name="rand"></a>Random address selection
 
 Features like /proc/\<PID\>/pagemap and "huge pages" are not available on any system (Linux-Specific). Another approach is to choose address pairs at random. We can allocate a very large block of memory (e.g., 1GB) and then pick random virtual addresses within that block.
 On a machine with 16 DRAM banks, we have a 1/16 chance that the chosen addresses are in the same bank. We could increase the chances of successful row hammering by modifying the [hammer routine](#flip-bits) to hammer more addresses per loop-iteration.
 
-### Double-sided hammering
+### <a name="double-sided"></a>Double-sided hammering
+
+Research has shown that to increase the chances of getting bit flips in row N, it is better to row-hammer both its direct neighbors (i.e., rows (N-1) and (N+1)) rather than hammering one neighbor and a more distant row. This is called **double-sided hammering**.
+
+Double-sided hammering however, is more complicated due to the fact that an attacker has to know/guess what the offset will be, in physical address space, between two rows that are in the same bank _and_ are adjacent. This has been dubbed as the **row offset**.
+
+Doing double-sided hammering requires us to pick physically-contiguous pages, e.g., via /proc/\<PID\>/pagemap or "huge pages".
+
+# <a name="exploitation"></a>How do we exploit bit flips?
 
 
 
