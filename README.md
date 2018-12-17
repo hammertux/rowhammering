@@ -96,7 +96,7 @@ Since v4.0, Android has been using ION memory management. Apps can use the inter
 
 ## <a name="target"></a>How can we target accesses?
 
-### <a=name="proc"></a>Using the physical address mapping
+### <a name="proc"></a>Using the physical address mapping
 
 This method uses the knowledge of how the CPU's memory controller maps physical addresses to DRAM's row, column and bank numbers along with the knowledge of either:
 
