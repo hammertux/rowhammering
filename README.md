@@ -130,8 +130,17 @@ Doing double-sided hammering requires us to pick physically-contiguous pages, e.
 
 
 
+# Mitigation Ideas
 
+The intuition to detect an "aggressor" process that is trying to hammer the rows is:
+Three patterns are seen when hammering:
+1. **high cache miss rate.**
+2. **high spatial locality of DRAM row accesses.**
+3. **high bank locality.**
 
+This can be seen as a "contradiction" with general memory access where a high spacial locality also results in a low cache miss rate. In this way we could distinguish between "hammering" and "non-hammering" processes.
+
+Idea for detection: check last-level cache for miss rate for all processes running, if we see that one process is causing a high last-level cache miss rate, we can then monitor the physical address of those memory addresses that cause the misses. From there, if the temporal locality of the row accesses are significantly high, we can assume that the process causing this behaviour **might** be malicious and hence being the one "hammering".
 
 
 
