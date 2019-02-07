@@ -124,13 +124,15 @@ Doing double-sided hammering requires us to pick physically-contiguous pages, e.
 
 # <a name="exploitation"></a>How do we exploit bit flips?
 
+Even though the bit flips produced by rowhammering seem as if they are random, they follow highly reproducible patterns. Given we hammer a certain memory location _x_, the probability _p_, that we flip bits in the same location where we flipped bits before is **extremely high**.
 
 
 
 
 
 
-# Mitigation Ideas
+
+<!-- # Mitigation Ideas
 
 The intuition to detect an "aggressor" process that is trying to hammer the rows is:
 Three patterns are seen when hammering:
@@ -140,7 +142,7 @@ Three patterns are seen when hammering:
 
 This can be seen as a "contradiction" with general memory access where a high spacial locality also results in a low cache miss rate. In this way we could distinguish between "hammering" and "non-hammering" processes.
 
-Idea for detection: check last-level cache for miss rate for all processes running, if we see that one process is causing a high last-level cache miss rate, we can then monitor the physical address of those memory addresses that cause the misses. From there, if the temporal locality of the row accesses are significantly high, we can assume that the process causing this behaviour **might** be malicious and hence being the one "hammering".
+Idea for detection: check last-level cache for miss rate for all processes running, if we see that one process is causing a high last-level cache miss rate, we can then monitor the physical address of those memory addresses that cause the misses. From there, if the temporal locality of the row accesses are significantly high, we can assume that the process causing this behaviour **might** be malicious and hence being the one "hammering". -->
 
 
 
