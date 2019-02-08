@@ -11,6 +11,8 @@
           - [Random address selection](#rand)
           - [Double-sided hammering](#double-sided)
 3. [How do we exploit bit flips?](#exploitation)
+  - [Exploitation through PTEs](#ptes)
+          - [Page Table Entries (PTEs)](#ptes-struct)
 
 # <a name="dram"></a>How is DRAM Organised?
 
@@ -125,6 +127,10 @@ Doing double-sided hammering requires us to pick physically-contiguous pages, e.
 # <a name="exploitation"></a>How do we exploit bit flips?
 
 Even though the bit flips produced by rowhammering seem as if they are random, they follow highly reproducible patterns. Given we hammer a certain memory location _x_, the probability _p_, that we flip bits in the same location where we flipped bits before is **extremely high**.
+
+## <a name="ptes"></a>Exploitation through PTEs
+
+### <a name="ptes-struct"></a>Page Table Entries
 
 
 
