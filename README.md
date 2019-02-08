@@ -132,6 +132,24 @@ Even though the bit flips produced by rowhammering seem as if they are random, t
 
 ### <a name="ptes-struct"></a>Page Table Entries
 
+A _64-bit_ Page Table Entry (PTE) usually has the following format:
+
+![PTE Format](https://github.com/andreadidio98/rowhammering/blob/master/pte.png?raw=true)
+
+A PTE has the following status bits:
+
+- **P** (bit 0): Indicates if page table is present in physical memory.
+- **RW** (bit 1): _Read-only_ or _read-write_ access permission for reachable pages.
+- **US** (bit 2): _User_ or kernel (_supervisor_) mode access permission for reachable pages.
+- **WT** (bit 3): _Write-through_ or _write-back_ policy.
+- **UC** (bit 4): Caching enabled or disabled.
+- **R** (bit 5): _Reference_ bit (set by MMU on reads & writes, cleared in software).
+- **D** (bit 6): _Dirty_ bit set if the page is written to.
+- **S** (bit 7): _Size_ bit (Usually 4KB or 4MB for Level 1 PTEs only).
+- **G** (bit 8): _Global_ bit set to avoid eviction from TLB on task switch.
+- **X/NX** (bit 63): _No eXecute_ bit.
+
+As we can see from the diagram above, _bits 9-11_ and _bits 52-62_ are ignored, and therefore causing a bit flip in that area would just be ignored by the CPU. _Bits 12-51_, are used by the physical page number. Each 4KB page table consists of 2^9 = 512 of such entries.
 
 
 
