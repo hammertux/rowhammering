@@ -13,6 +13,7 @@
 3. [How do we exploit bit flips?](#exploitation)
   - [Exploitation through PTEs](#ptes)
           - [Page Table Entries (PTEs)](#ptes-struct)
+          - [Managing Page Tables](#ptman)
 
 # <a name="dram"></a>How is DRAM Organised?
 
@@ -150,6 +151,12 @@ A PTE has the following status bits:
 - **X/NX** (bit 63): _No eXecute_ bit.
 
 As we can see from the diagram above, _bits 9-11_ and _bits 52-62_ are ignored, and therefore causing a bit flip in that area would just be ignored by the CPU. _Bits 12-51_, are used by the physical page number. Each 4KB page table consists of 2^9 = 512 of such entries.
+
+### <a name="ptman"></a>Managing Page Tables
+
+A typical mapping of a virtual address space is something like:
+
+![Page Table Management](https://github.com/andreadidio98/rowhammering/blob/master/pt%20man.png?raw=true)
 
 
 
