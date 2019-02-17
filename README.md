@@ -14,6 +14,8 @@
   - [Exploitation through PTEs](#ptes)
           - [Page Table Entries (PTEs)](#ptes-struct)
           - [Managing Page Tables](#ptman)
+4. [Post-Rowhammer Exploitation](#postex)
+5. [How do we mitigate Rowhammer?](#mitigate)
 
 # <a name="dram"></a>How is DRAM Organised?
 
@@ -168,21 +170,18 @@ The aim of this exploit is to get access to a page table, which **gives access t
 7. Abuse R/W access to all of physical memory.
 
 
+# <a name="postex"></a>Post-Rowhammer Exploitation
 
+When scanning the entire physical memory, there are various operations we can do:
 
+1. Modify binary pages executed in root privileges (Xiao et al. 2016)
+2. Modify credential structs (Veen et al. 2016)
+3. Read Crypto keys (Xiao et al. 2016)
+4. Corrupt RSA signatures (Bhattacharya et al. 2016)
+5. Modify certificates.
+6. And More...
 
-
-<!-- # Mitigation Ideas
-
-The intuition to detect an "aggressor" process that is trying to hammer the rows is:
-Three patterns are seen when hammering:
-1. **high cache miss rate.**
-2. **high spatial locality of DRAM row accesses.**
-3. **high bank locality.**
-
-This can be seen as a "contradiction" with general memory access where a high spacial locality also results in a low cache miss rate. In this way we could distinguish between "hammering" and "non-hammering" processes.
-
-Idea for detection: check last-level cache for miss rate for all processes running, if we see that one process is causing a high last-level cache miss rate, we can then monitor the physical address of those memory addresses that cause the misses. From there, if the temporal locality of the row accesses are significantly high, we can assume that the process causing this behaviour **might** be malicious and hence being the one "hammering". -->
+# <a name="mitigate"></a>How do we mitigate Rowhammer?
 
 
 
@@ -191,9 +190,6 @@ Idea for detection: check last-level cache for miss rate for all processes runni
 1. [Google Project Zero Rowhammer](https://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html)
 2. [RuhrSec 2017: "Rowhammer Attacks: A Walkthrough Guide", Dr. Clémentine Maurice & Daniel Gruss](https://www.youtube.com/watch?v=-33gCDrSl_Q)
 3. [Drammer: Deterministic Rowhammer Attacks on Mobile Platforms](https://vvdveen.com/publications/drammer.pdf)
-
-
-
 
 
 [Back to Top](#top)
