@@ -158,6 +158,15 @@ A typical mapping of a virtual address space is something like:
 
 ![Page Table Management](https://github.com/andreadidio98/rowhammering/blob/master/pt%20man.png?raw=true)
 
+The aim of this exploit is to get access to a page table, which **gives access to all of physical memory**. The strategy for this exploit can be something as follows:
+1. Allocate a large chunk of memory.
+2. Search for locations prone to flipping.
+3. Check if the yfall into the "right spot" (_RW bit_ or _Physical Page Number_) in a PTE for allowing the exploit.
+4. Return that particular area of memory to the OS.
+5. Force the OS to reuse the memory for PTEs by allocating a lot of address space.
+6. Cause the bit flip (**shift PTE to point into the page table**).
+7. Abuse R/W access to all of physical memory.
+
 
 
 
